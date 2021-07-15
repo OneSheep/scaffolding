@@ -1,8 +1,0 @@
-#!/usr/bin/env zx
-
-console.log(chalk.blue('New Flutter app!'))
-let name = await question('What shall we call it? ')
-let path = await $`pwd`
-console.log(`creating app in ${path.stdout}/${name}`)
-
-// await $`flutter create ${name}`
