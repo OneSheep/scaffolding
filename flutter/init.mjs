@@ -22,10 +22,10 @@ const templates = [
 ]
 
 const packages = [
-    'flutter_svg|SVG assets',
     'firebase_analytics|analytics',
     'firebase_crashlytics|crash reporting',
     'provider|shared state management',
+    'flutter_svg|SVG assets',
     'collection|enum helpers',
     'http|api calls',
     'url_launcher|launching links',
