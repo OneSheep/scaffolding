@@ -13,20 +13,23 @@ const rootFolders = [
 ]
 
 const templates = [
+    'README.md',
+    'analysis_options.yaml',  // remove after flutter 2.3
+    'flutter_launcher_icons.yaml',
     '_meta/.gitignore',
     'lib/styles.dart',
     'lib/extensions.dart',
-    'analysis_options.yaml',  // remove after flutter 2.3
-    'flutter_launcher_icons.yaml',
-    'README.md'
 ]
 
 const packages = [
-    'flutter_svg',
-    'firebase_analytics',
-    'firebase_crashlytics',
-    'provider',
-    'collection',
+    'flutter_svg|SVG assets',
+    'firebase_analytics|analytics',
+    'firebase_crashlytics|crash reporting',
+    'provider|shared state management',
+    'collection|enum helpers',
+    'http|api calls',
+    'url_launcher|launching links',
+    'shared_preferences|key-value store',
 ]
 
 const devPackages = [
@@ -34,28 +37,43 @@ const devPackages = [
     'flutter_launcher_icons',
 ]
 
-// https://github.com/OneSheep/scaffolding/raw/main/bin/flutter.mjs
-const templatePath = 'https://github.com/OneSheep/scaffolding/raw/main'
-
-// flutter pub add --dev flutter_lints
+const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
 
 $.verbose = false
-console.log(chalk.yellow('\nNew Flutter app!\n------------------------'))
+console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
 let appName = await question('Right, what shall we call it? ')
 let path = (await $`pwd`).stdout.split('\n')[0]
 
-console.log(chalk.green(`\nCreating app in ${path}/${appName}`))
+// await $`mkdir ${appName}`
+console.log(`\nCreating app in ${path}/${appName} ...`)
 
-// await $`flutter create ${appName}`
-await $`mkdir ${appName}`
+await $`flutter create ${appName}`
 cd(`${path}/${appName}`)
 
-rootFolders.forEach(async (folder) => {
+
+for (const folder of rootFolders) {
     await $`mkdir -p ${folder}`
-})
+}
 
-templates.forEach(async (path) => {
-    await $`curl -fsSL ${templatePath}/${path} > ${path}`
-})
+console.log(`Fetching templates ...`)
 
+for (const template of templates) {
+    await $`curl -fsSL ${templatePath}/${template} > ${template}`
+}
+
+console.log(`Installing dev packages ...`)
+
+for (const dev of devPackages) {
+    await $`flutter pub add --dev ${dev}`
+}
+
+for (const pub of packages) {
+    let [pName, pReason] = pub.split('|');
+    let yes = await question(chalk`Use {bold ${pName}} for ${pReason}? [yes] `)
+    if (['yes', 'YES', 'Y', 'y'].includes(yes || 'yes')) {
+        await $`flutter pub add ${pName}`
+    }
+}
+
+console.log(chalk.green(`\nReady!`))
 
