@@ -42,12 +42,16 @@ const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/mai
 $.verbose = false
 console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
 let appName = await question('Right, what shall we call it? ')
+let org = await question('Enter reverse domain for bundle id. Press enter to use default(com.example): ')
+
+if (org == '') org = 'com.example'
+
 let path = (await $`pwd`).stdout.split('\n')[0]
 
 // await $`mkdir ${appName}`
 console.log(`\nCreating app in ${path}/${appName} ...`)
 
-await $`flutter create ${appName}`
+await $`flutter create --org ${org} ${appName}`
 cd(`${path}/${appName}`)
 
 
