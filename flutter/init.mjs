@@ -10,7 +10,8 @@ const rootFolders = [
     'assets/fonts',
     'assets/images',
     'assets/icons',
-]
+    '.github/workflows',
+];
 
 const templates = [
     'README.md',
@@ -19,7 +20,8 @@ const templates = [
     '_meta/.gitignore',
     'lib/styles.dart',
     'lib/extensions.dart',
-]
+    '.github/workflows/test.yml',
+];
 
 const packages = [
     'firebase_analytics|analytics',
@@ -30,12 +32,12 @@ const packages = [
     'http|api calls',
     'url_launcher|launching links',
     'shared_preferences|key-value store',
-]
+];
 
 const devPackages = [
     'flutter_lints',
     'flutter_launcher_icons',
-]
+];
 
 const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
 
