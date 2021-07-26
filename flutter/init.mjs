@@ -39,45 +39,75 @@ const devPackages = [
 
 const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
 
-$.verbose = false
-console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
-let appName = await question('Right, what shall we call it? ')
-let org = await question('Enter reverse domain for bundle id. Press enter to use default(com.example): ')
+const run = async () => {
+    $.verbose = false
+    console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
 
-if (org == '') org = 'com.example'
+    await createApp();
 
-let path = (await $`pwd`).stdout.split('\n')[0]
+    await makeFolders();
 
-// await $`mkdir ${appName}`
-console.log(`\nCreating app in ${path}/${appName} ...`)
+    console.log(`Fetching templates ...`)
+    await fetchTemplates();
 
-await $`flutter create --org ${org} ${appName}`
-cd(`${path}/${appName}`)
+    console.log(`Installing dev packages ...`)
+    await installDevPackages();
 
+    await installPackages();
 
-for (const folder of rootFolders) {
-    await $`mkdir -p ${folder}`
+    console.log(chalk.green(`\nReady!`))
 }
 
-console.log(`Fetching templates ...`)
+const createApp = async () => {
+    let appName = await question('Right, what shall we call it? ');
+    const defaultBundleId = `com.example.${appName}`;
+    let org = await question(`Enter reverse domain for bundle id. [${defaultBundleId}]: `);
 
-for (const template of templates) {
-    await $`curl -fsSL ${templatePath}/${template} > ${template}`
+    if (org == '') org = defaultBundleId;
+
+    let path = (await $`pwd`).stdout.split('\n')[0];
+
+    // await $`mkdir ${appName}`
+    console.log(`\nCreating app in ${path}/${appName} ...`);
+    await $`flutter create --org ${org} ${appName}`;
+
+    cd(`${path}/${appName}`);
 }
 
-console.log(`Installing dev packages ...`)
-
-for (const dev of devPackages) {
-    await $`flutter pub add --dev ${dev}`
-}
-
-for (const pub of packages) {
-    let [pName, pReason] = pub.split('|');
-    let yes = await question(chalk`Use {bold ${pName}} for ${pReason}? [yes] `)
-    if (['yes', 'YES', 'Y', 'y'].includes(yes || 'yes')) {
-        await $`flutter pub add ${pName}`
+const makeFolders = async () => {
+    for (const folder of rootFolders) {
+        await $`mkdir -p ${folder}`
     }
 }
 
-console.log(chalk.green(`\nReady!`))
+const installPackages = async () => {
+    let isFirebaseCoreInstalled = false;
+
+    for (const pub of packages) {
+        let [pName, pReason] = pub.split('|');
+        let yes = await question(chalk`Use {bold ${pName}} for ${pReason}? [yes] `)
+        if (['yes', 'YES', 'Y', 'y'].includes(yes || 'yes')) {
+            const needsFirebaseCore = pName.startsWith('firebase_');
+            if (needsFirebaseCore && !isFirebaseCoreInstalled) {
+                await $`flutter pub add firebase_core`;
+                isFirebaseCoreInstalled = true;
+            }
+            await $`flutter pub add ${pName}`;
+        }
+    }
+}
+
+const installDevPackages = async () => {
+    for (const dev of devPackages) {
+        await $`flutter pub add --dev ${dev}`
+    }
+}
+
+const fetchTemplates = async () => {
+    for (const template of templates) {
+        await $`curl -fsSL ${templatePath}/${template} > ${template}`
+    }
+}
+
+await run();
 
