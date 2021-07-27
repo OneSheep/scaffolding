@@ -62,7 +62,7 @@ const run = async () => {
 
 const createApp = async () => {
     let appName = await question('Right, what shall we call it? ');
-    const defaultBundleId = `com.example.${appName}`;
+    const defaultBundleId = `org.onesheep.${appName}`;
     let org = await question(`Enter reverse domain for bundle id. [${defaultBundleId}]: `);
 
     if (org == '') org = defaultBundleId;
