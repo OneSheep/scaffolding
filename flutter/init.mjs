@@ -41,6 +41,8 @@ const devPackages = [
 
 const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
 
+let collectedPackages = [];
+
 const run = async () => {
     $.verbose = false
     console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
@@ -60,10 +62,60 @@ const run = async () => {
     console.log(chalk.green(`\nReady!`))
 }
 
+const collectPackages = async () => {
+    let isDone = false;
+
+    while (!isDone) {
+        let choice = await pickPackage();
+        if (!choice) {
+            isDone = true;
+            return;
+        }
+        collectPackage(choice);
+    }
+}
+
+const collectPackage = (packageName) => {
+    if (collectedPackages.indexOf(packageName) > -1) {
+        return;
+    }
+    collectedPackages.push(packageName);
+
+    const needsFirebaseCore = packageName.startsWith('firebase_');
+    if (!needsFirebaseCore) return;
+    if (collectedPackages.indexOf('firebase_core') > -1) return;
+
+    collectedPackages.push('firebase_core');
+}
+
+const pickPackage = async () => {
+    console.log('\n');
+    for (let index = 0; index < packages.length; index++) {
+        let [pName, pReason] = packages[index].split('|');
+        console.log(chalk`${index}. {bold ${pName}} for ${pReason}`);
+    }
+    console.log('\n');
+    if (collectedPackages.length > 0) {
+        console.log('Selected: ', collectedPackages);
+        console.log('\n');
+    }
+    let choice = await question(chalk`Choose a number for a package to add or {bold Enter} to continue: `);
+    if (!choice || isNaN(choice)) return null;
+    choice = Number(choice);
+    if (choice < 0 || choice >= packages.length) {
+        return null;
+    }
+
+    return packages[choice].split('|')[0];
+}
+
 const createApp = async () => {
     let appName = await question('Right, what shall we call it? ');
     const defaultBundleId = `org.onesheep.${appName}`;
     let org = await question(`Enter reverse domain for bundle id. [${defaultBundleId}]: `);
+    console.log('What packages will the app need?');
+
+    await collectPackages();
 
     if (org == '') org = defaultBundleId;
 
@@ -83,19 +135,8 @@ const makeFolders = async () => {
 }
 
 const installPackages = async () => {
-    let isFirebaseCoreInstalled = false;
-
-    for (const pub of packages) {
-        let [pName, pReason] = pub.split('|');
-        let yes = await question(chalk`Use {bold ${pName}} for ${pReason}? [yes] `)
-        if (['yes', 'YES', 'Y', 'y'].includes(yes || 'yes')) {
-            const needsFirebaseCore = pName.startsWith('firebase_');
-            if (needsFirebaseCore && !isFirebaseCoreInstalled) {
-                await $`flutter pub add firebase_core`;
-                isFirebaseCoreInstalled = true;
-            }
-            await $`flutter pub add ${pName}`;
-        }
+    for (const p of collectedPackages) {
+        await $`flutter pub add ${p}`;
     }
 }
 
