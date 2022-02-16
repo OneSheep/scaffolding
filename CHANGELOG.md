@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version) for commit
 guidelines.
 
+## 1.1.0 (2022-02-16)
+
+### Added
+
+- added standard version config
+  ([cab0404](https://github.com/OneSheep/scaffolding/commit/cab0404e0d1c872a7dac7e60ac2ed801b653458a))
+
 ## 1.0.0 (2021-07-26)
 
 ### Added
