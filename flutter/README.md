@@ -78,6 +78,6 @@ open ios/Runner.xcworkspace
 
 
 
-[1]: https://res.cloudinary.com/kiekies/image/upload/v1608555674/plf0vnvbae8qq8vitq7v.png
+[1]: https://res.cloudinary.com/kiekies/image/upload/v1652880941/gugo2gvwuoumdxdbmino.png
 [2]: https://www.conventionalcommits.org/en/v1.0.0/
 
