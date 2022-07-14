@@ -15,12 +15,16 @@ const rootFolders = [
 
 const templates = [
     'README.md',
-    'analysis_options.yaml',  // remove after flutter 2.3
     'flutter_launcher_icons.yaml',
     '_meta/.gitignore',
     'lib/styles.dart',
     'lib/extensions.dart',
     '.github/workflows/test.yml',
+    'l10n.yaml',
+    'lib/l10n/app_en.arb',
+    'lib/main.dart',
+    'lib/screens/home_screen.dart',
+    'pubspec.yaml',
 ];
 
 const packages = [
@@ -35,11 +39,10 @@ const packages = [
 ];
 
 const devPackages = [
-    'flutter_lints',
     'flutter_launcher_icons',
 ];
 
-const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
+const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/add-localization/flutter'
 
 let collectedPackages = [];
 
