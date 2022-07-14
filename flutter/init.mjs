@@ -42,7 +42,7 @@ const packages = [
 const devPackages = [];
 
 const templatePath =
-  'https://raw.githubusercontent.com/OneSheep/scaffolding/add-localization/flutter';
+  'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter';
 
 let collectedPackages = [];
 
