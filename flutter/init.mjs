@@ -39,7 +39,7 @@ const packages = [
   'shared_preferences|key-value store',
 ];
 
-const devPackages = ['flutter_launcher_icons'];
+const devPackages = [];
 
 const templatePath =
   'https://raw.githubusercontent.com/OneSheep/scaffolding/add-localization/flutter';
