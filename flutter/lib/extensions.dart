@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 
 extension StringExtend on String {
@@ -12,6 +13,7 @@ extension EnumExtend on Object {
 }
 
 extension ExtendBuildContext on BuildContext {
+  AppLocalizations get tr => AppLocalizations.of(this)!;
   bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
   double get textScale => MediaQuery.of(this).textScaleFactor;
   double get displayScale => MediaQuery.of(this).devicePixelRatio;
