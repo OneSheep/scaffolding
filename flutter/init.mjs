@@ -2,11 +2,6 @@
 
 const rootFolders = [
   '_meta',
-  'lib/services',
-  'lib/models',
-  'lib/screens',
-  'lib/components',
-  'lib/l10n',
   'assets/animations',
   'assets/fonts',
   'assets/images',
@@ -21,11 +16,6 @@ const templates = [
   'lib/styles.dart',
   'lib/extensions.dart',
   '.github/workflows/test.yml',
-  'l10n.yaml',
-  'lib/l10n/app_en.arb',
-  'lib/main.dart',
-  'lib/screens/home_screen.dart',
-  'pubspec.yaml',
 ];
 
 const packages = [
@@ -39,7 +29,7 @@ const packages = [
   'shared_preferences|key-value store',
 ];
 
-const devPackages = [];
+const devPackages = ['flutter_launcher_icons'];
 
 const templatePath =
   'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter';
@@ -128,7 +118,7 @@ const createApp = async () => {
 
   // await $`mkdir ${appName}`
   console.log(`\nCreating app in ${path}/${appName} ...`);
-  await $`flutter create --org ${org} ${appName}`;
+  await $`flutter create --org ${org} -t skeleton ${appName}`;
 
   cd(`${path}/${appName}`);
 };
