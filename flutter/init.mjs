@@ -2,65 +2,60 @@
 
 const rootFolders = [
     '_meta',
-    'lib/services',
-    'lib/models',
-    'lib/screens',
-    'lib/components',
     'assets/animations',
     'assets/fonts',
     'assets/images',
     'assets/icons',
     '.github/workflows',
+    'lib/src/shared',
 ];
 
 const templates = [
     'README.md',
-    'analysis_options.yaml',  // remove after flutter 2.3
+    'analysis_options.yaml',
     'flutter_launcher_icons.yaml',
     '_meta/.gitignore',
-    'lib/styles.dart',
-    'lib/extensions.dart',
+    'lib/src/shared/styles.dart',
+    'lib/src/shared/extensions.dart',
     '.github/workflows/test.yml',
 ];
 
 const packages = [
     'firebase_analytics|analytics',
     'firebase_crashlytics|crash reporting',
-    'provider|shared state management',
+    'get_it|shared state management',
     'flutter_svg|SVG assets',
-    'collection|enum helpers',
     'http|api calls',
     'url_launcher|launching links',
     'shared_preferences|key-value store',
 ];
 
-const devPackages = [
-    'flutter_lints',
-    'flutter_launcher_icons',
-];
+const devPackages = ['flutter_launcher_icons'];
 
-const templatePath = 'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter'
+const templatePath =
+    'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter';
 
-let collectedPackages = [];
+let collectedPackages = ['collection'];
 
 const run = async () => {
-    $.verbose = false
-    console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'))
+    $.verbose = false;
+    console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app! 🕶 \n'));
 
     await createApp();
 
     await makeFolders();
 
-    console.log(`Fetching templates ...`)
-    await fetchTemplates();
-
-    console.log(`Installing dev packages ...`)
+    console.log(`Installing dev packages ...`);
     await installDevPackages();
 
     await installPackages();
 
-    console.log(chalk.green(`\nReady!`))
-}
+    console.log(`Fetching templates ...`);
+    await fetchTemplates();
+    // await copyTemplates();  // testing locally
+
+    console.log(chalk.green(`\nReady!  🚀 `));
+};
 
 const collectPackages = async () => {
     let isDone = false;
@@ -73,7 +68,7 @@ const collectPackages = async () => {
         }
         collectPackage(choice);
     }
-}
+};
 
 const collectPackage = (packageName) => {
     if (collectedPackages.indexOf(packageName) > -1) {
@@ -81,12 +76,14 @@ const collectPackage = (packageName) => {
     }
     collectedPackages.push(packageName);
 
+    if (packageName == 'get_it') collectedPackages.push('get_it_mixin');
+
     const needsFirebaseCore = packageName.startsWith('firebase_');
     if (!needsFirebaseCore) return;
     if (collectedPackages.indexOf('firebase_core') > -1) return;
 
     collectedPackages.push('firebase_core');
-}
+};
 
 const pickPackage = async () => {
     console.log('\n');
@@ -99,7 +96,9 @@ const pickPackage = async () => {
         console.log('Selected: ', collectedPackages);
         console.log('\n');
     }
-    let choice = await question(chalk`Choose a number for a package to add or {bold Enter} to continue: `);
+    let choice = await question(
+        chalk`Choose a number for a package to add or {bold Enter} to continue: `,
+    );
     if (!choice || isNaN(choice)) return null;
     choice = Number(choice);
     if (choice < 0 || choice >= packages.length) {
@@ -107,10 +106,10 @@ const pickPackage = async () => {
     }
 
     return packages[choice].split('|')[0];
-}
+};
 
 const createApp = async () => {
-    let appName = await question('Right, what shall we call it? ');
+    let appName = await question('Right, what shall we call it? Enter a valid package name like the_verge: ');
     const defaultBundleId = `org.onesheep.${appName}`;
     let org = await question(`Enter reverse domain for bundle id. [${defaultBundleId}]: `);
     console.log('What packages will the app need?');
@@ -123,34 +122,41 @@ const createApp = async () => {
 
     // await $`mkdir ${appName}`
     console.log(`\nCreating app in ${path}/${appName} ...`);
-    await $`flutter create --org ${org} ${appName}`;
+    await $`flutter create --org ${org} -t skeleton ${appName}`;
 
     cd(`${path}/${appName}`);
-}
+};
 
 const makeFolders = async () => {
     for (const folder of rootFolders) {
-        await $`mkdir -p ${folder}`
+        await $`mkdir -p ${folder}`;
     }
-}
+};
 
 const installPackages = async () => {
     for (const p of collectedPackages) {
         await $`flutter pub add ${p}`;
     }
-}
+};
 
 const installDevPackages = async () => {
     for (const dev of devPackages) {
-        await $`flutter pub add --dev ${dev}`
+        await $`flutter pub add --dev ${dev}`;
     }
-}
+};
 
 const fetchTemplates = async () => {
     for (const template of templates) {
-        await $`curl -fsSL ${templatePath}/${template} > ${template}`
+        await $`curl -fsSL ${templatePath}/${template} > ${template}`;
     }
-}
+};
+
+const copyTemplates = async () => {
+    const devPath = '/Users/jannie/Code/scaffolding/flutter';
+    for (const template of templates) {
+        // console.log(`cp ${devPath}/${template} ./${template}`);
+        await $`cp ${devPath}/${template} ./${template}`;
+    }
+};
 
 await run();
-
