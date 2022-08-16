@@ -8,10 +8,6 @@ extension StringExtend on String {
       );
 }
 
-extension EnumExtend on Object {
-  String get enumString => toString().split('.').last;
-}
-
 extension ExtendBuildContext on BuildContext {
   AppLocalizations get tr => AppLocalizations.of(this)!;
   bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
