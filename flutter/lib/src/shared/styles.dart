@@ -39,18 +39,18 @@ class _Styles {
   // themes start with themeXyz
   final themeLight = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: _brandColor,
+    primarySwatch: _colorBrand,
     // colorScheme: ColorScheme.fromSwatch(primarySwatch: _brandColor),
-    colorScheme: ColorScheme.light(
-      primary: _brandColor,
+    colorScheme: const ColorScheme.light(
+      primary: _colorBrand,
       secondary: _colorSecondary,
     ),
   );
 
   final themeDark = ThemeData(
     brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
-      primary: _brandColor,
+    colorScheme: const ColorScheme.dark(
+      primary: _colorBrand,
       secondary: Colors.white,
     ),
   );

@@ -34,6 +34,6 @@ extension MockableDateTime on DateTime {
   }
 
   DateTime get midnight {
-    return DateTime(this.year, this.month, this.day);
+    return DateTime(year, month, day);
   }
 }

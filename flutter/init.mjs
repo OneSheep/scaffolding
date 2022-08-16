@@ -7,6 +7,7 @@ const rootFolders = [
     'assets/images',
     'assets/icons',
     '.github/workflows',
+    'lib/src/shared',
 ];
 
 const templates = [
@@ -14,8 +15,8 @@ const templates = [
     'analysis_options.yaml',
     'flutter_launcher_icons.yaml',
     '_meta/.gitignore',
-    'lib/styles.dart',
-    'lib/extensions.dart',
+    'lib/src/shared/styles.dart',
+    'lib/src/shared/extensions.dart',
     '.github/workflows/test.yml',
 ];
 
@@ -24,7 +25,6 @@ const packages = [
     'firebase_crashlytics|crash reporting',
     'get_it|shared state management',
     'flutter_svg|SVG assets',
-    'collection|enum helpers',
     'http|api calls',
     'url_launcher|launching links',
     'shared_preferences|key-value store',
@@ -35,25 +35,26 @@ const devPackages = ['flutter_launcher_icons'];
 const templatePath =
     'https://raw.githubusercontent.com/OneSheep/scaffolding/main/flutter';
 
-let collectedPackages = [];
+let collectedPackages = ['collection'];
 
 const run = async () => {
     $.verbose = false;
-    console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app!  \n'));
+    console.log(chalk.black.bgGreenBright.bold('\n  New Flutter app! 🕶 \n'));
 
     await createApp();
 
     await makeFolders();
-
-    console.log(`Fetching templates ...`);
-    await fetchTemplates();
 
     console.log(`Installing dev packages ...`);
     await installDevPackages();
 
     await installPackages();
 
-    console.log(chalk.green(`\nReady!`));
+    console.log(`Fetching templates ...`);
+    await fetchTemplates();
+    // await copyTemplates();  // testing locally
+
+    console.log(chalk.green(`\nReady!  🚀 `));
 };
 
 const collectPackages = async () => {
@@ -108,7 +109,7 @@ const pickPackage = async () => {
 };
 
 const createApp = async () => {
-    let appName = await question('Right, what shall we call it? ');
+    let appName = await question('Right, what shall we call it? Enter a valid package name like the_verge: ');
     const defaultBundleId = `org.onesheep.${appName}`;
     let org = await question(`Enter reverse domain for bundle id. [${defaultBundleId}]: `);
     console.log('What packages will the app need?');
@@ -147,6 +148,14 @@ const installDevPackages = async () => {
 const fetchTemplates = async () => {
     for (const template of templates) {
         await $`curl -fsSL ${templatePath}/${template} > ${template}`;
+    }
+};
+
+const copyTemplates = async () => {
+    const devPath = '/Users/jannie/Code/scaffolding/flutter';
+    for (const template of templates) {
+        // console.log(`cp ${devPath}/${template} ./${template}`);
+        await $`cp ${devPath}/${template} ./${template}`;
     }
 };
 
