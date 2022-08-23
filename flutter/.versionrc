@@ -1,0 +1,47 @@
+{
+    "bumpFiles": [],
+    "packageFiles": [],
+    "skip": {
+        "commit": true,
+        "tag": true
+    },
+    "types": [
+        {
+            "type": "feat",
+            "section": "Added"
+        },
+        {
+            "type": "fix",
+            "section": "Fixed"
+        },
+        {
+            "type": "refactor",
+            "hidden": true
+        },
+        {
+            "type": "chore",
+            "hidden": true
+        },
+        {
+            "type": "docs",
+            "hidden": true
+        },
+        {
+            "type": "style",
+            "hidden": true
+        },
+        {
+            "type": "perf",
+            "hidden": true
+        },
+        {
+            "type": "test",
+            "hidden": true
+        },
+        {
+            "type": "wip",
+            "section": "WIP",
+            "hidden": true
+        }
+    ]
+}

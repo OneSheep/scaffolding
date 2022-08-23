@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:collection/collection.dart' show IterableExtension;
-
-extension StringExtend on String {
-  T? toEnum<T>(Iterable<T> values) => values.firstWhereOrNull(
-        (v) => v != null && this == v.toString().split('.').last,
-      );
-}
 
 extension ExtendBuildContext on BuildContext {
   AppLocalizations get tr => AppLocalizations.of(this)!;
