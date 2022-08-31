@@ -1,8 +1,15 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See
-[standard-version](https://github.com/conventional-changelog/standard-version) for commit
-guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### 1.4.1 (2022-08-31)
+
+- improved the project documentation template
+- added list of available templates
+
+## 1.4.0 (2022-08-23)
+
+- new Flutter project scaffold
 
 ## 1.3.0 (2022-06-13)
 
