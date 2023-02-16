@@ -29,5 +29,10 @@ linter:
 analyzer:
   errors:
     todo: info
+    invalid_annotation_target: ignore
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.mocks.dart'
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
