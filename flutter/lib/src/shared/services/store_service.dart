@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+enum Keys {
+  /// The key for the theme mode.
+  themeMode
+}
+
 class StoreService {
   StoreService._(this._box);
   final Box _box;
@@ -20,12 +25,12 @@ class StoreService {
   // Settings
   // ------------------------------------
   String get themeMode => _box.get(
-        'themeMode',
+        Keys.themeMode,
         defaultValue: 'light',
       );
 
   Future<void> putThemeMode(String mode) async {
-    await _box.put('themeMode', mode);
+    await _box.put(Keys.themeMode, mode);
   }
 
   // ------------------------------------
