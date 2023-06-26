@@ -44,7 +44,7 @@ const packages = [
   'firebase_analytics',
   'firebase_crashlytics',
   'get_it',
-  'get_it_mixin',
+  'watch_it',
   'go_router',
   'hive',
   'hive_flutter',
