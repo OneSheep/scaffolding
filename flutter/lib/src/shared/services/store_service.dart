@@ -30,7 +30,7 @@ class StoreService {
       );
 
   Future<void> putThemeMode(String mode) async {
-    await _box.put(Keys.themeMode, mode);
+    await _box.put(Keys.themeMode.toString(), mode);
   }
 
   // ------------------------------------
